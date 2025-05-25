@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './componets/landingPage';
+import LandingPage from './componets/LandingPage';
 import StudentLoginForm from './componets/student/StudentLoginForm';
 import StudentDashboard from './componets/student/StudentDashboard';
 import MyCourse from './componets/student/MyCourse';
