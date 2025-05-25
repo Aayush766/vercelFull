@@ -1,0 +1,103 @@
+@import "tailwindcss";
+/* This will ensure smooth scrolling for the image slider */
+/* Global or component-specific CSS */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-glow {
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+@keyframes pageTurnForwardOut {
+  0% {
+    transform: rotateY(0deg) translateX(0);
+    opacity: 1;
+    transform-origin: left center;
+  }
+  100% {
+    transform: rotateY(90deg) translateX(50%);
+    opacity: 0.5;
+    transform-origin: left center;
+  }
+}
+
+@keyframes pageTurnForwardIn {
+  0% {
+    transform: rotateY(-90deg) translateX(-50%);
+    opacity: 0.5;
+    transform-origin: right center;
+  }
+  100% {
+    transform: rotateY(0deg) translateX(0);
+    opacity: 1;
+    transform-origin: right center;
+  }
+}
+
+@keyframes pageTurnBackwardOut {
+  0% {
+    transform: rotateY(0deg) translateX(0);
+    opacity: 1;
+    transform-origin: right center;
+  }
+  100% {
+    transform: rotateY(-90deg) translateX(-50%);
+    opacity: 0.5;
+    transform-origin: right center;
+  }
+}
+
+@keyframes pageTurnBackwardIn {
+  0% {
+    transform: rotateY(90deg) translateX(50%);
+    opacity: 0.5;
+    transform-origin: left center;
+  }
+  100% {
+    transform: rotateY(0deg) translateX(0);
+    opacity: 1;
+    transform-origin: left center;
+  }
+}
+
+/* Apply the animations using utility classes */
+.animate-page-turn-forward-out {
+  animation: pageTurnForwardOut 0.3s ease-in-out forwards;
+}
+
+.animate-page-turn-forward-in {
+  animation: pageTurnForwardIn 0.3s ease-in-out forwards;
+}
+
+.animate-page-turn-backward-out {
+  animation: pageTurnBackwardOut 0.3s ease-in-out forwards;
+}
+
+.animate-page-turn-backward-in {
+  animation: pageTurnBackwardIn 0.3s ease-in-out forwards;
+}
+
+/* Also, if you don't have a tailwind.config.js, you might need to define custom shadows */
+/* For example, the shadow-3xl used in the component */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
+}

@@ -1,0 +1,32 @@
+/* calendar-custom.css */
+
+.react-calendar {
+    border: none;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+  }
+  
+  .calendar-dark {
+    background-color: #1f2937;
+    color: white;
+  }
+  
+  .calendar-dark abbr {
+    color: white !important;
+  }
+  
+  .calendar-dark .react-calendar__tile--now {
+    background: #4b5563 !important;
+    color: white !important;
+    border-radius: 8px;
+  }
+  
+  .calendar-dark .react-calendar__tile--active {
+    background: #2563eb !important;
+    color: white !important;
+  }
+  
+  .calendar-dark .react-calendar__navigation button {
+    color: white !important;
+  }
+  

@@ -1,0 +1,15 @@
+.attendance-marker {
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 4px;
+  }
+  
+  .attendance-marker.present {
+    color: green;
+  }
+  
+  .attendance-marker.absent {
+    color: red;
+  }
+  

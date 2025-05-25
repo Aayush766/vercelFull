@@ -1,0 +1,20 @@
+@import "tailwindcss";
+/* This will ensure smooth scrolling for the image slider */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Apply the marquee animation to the image container */
+.animate-marquee {
+  display: flex;
+  animation: marquee 15s linear infinite;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
