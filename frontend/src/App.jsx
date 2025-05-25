@@ -34,7 +34,7 @@ import TrainerProfile from './componets/trainer/TrainerProfile';
 import QuizStart from './componets/student/QuizStart';
 import QuizSummary from './componets/student/QuizSummary';
 import EbookViewer from './componets/EbookViwer';
-import TeacherDoubts from './componets/student/teacherDoubts';
+import TeacherDoubts from './componets/student/TeacherDoubts';
 import DocumentViewer from './componets/student/DocumentViewer';
 import { NotificationProvider } from './componets/student/context/NotificationContext';
 // import AdminPanel from './AdminPanel'; // Uncomment if you have this
