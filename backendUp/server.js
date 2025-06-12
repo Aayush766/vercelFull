@@ -11,13 +11,34 @@ const studentRoutes = require('./routes/studentRoutes');
 const trainerRoutes = require('./routes/trainerRoutes');
 
 const app = express();
+
+// --- FIX 1: Ensure FRONTEND_URL environment variable is CORRECT and present on Render ---
+// Get your Netlify frontend URL. Example: https://lmsgk.netlify.app
+// Set an environment variable named FRONTEND_URL in your Render backend service.
+// Its value MUST be the exact Netlify URL (e.g., https://lmsgk.netlify.app).
 app.use(cors({
-    origin: [process.env.FRONTEND_URL ], // Allow your frontend origin
-    credentials: true // Allow cookies to be sent
+    origin: process.env.FRONTEND_URL, // Directly use the string, array syntax is fine but not strictly needed for one origin
+    credentials: true, // Allow cookies to be sent
+    optionsSuccessStatus: 204 // Good practice for preflight requests
 }));
+
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads', express.static('uploads')); // Keep this for any legacy local uploads or profile pictures for now
+
+// --- FIX 2 (Optional but Recommended for Cookies): Adjust SameSite if needed ---
+// This change goes into your authController.js (where generateTokensAndSetCookies is)
+// (This is not in server.js, but crucial for cookies)
+// If you continue to get 401 on refreshToken after other fixes, try this.
+// In controllers/authController.js, in generateTokensAndSetCookies function:
+// res.cookie('refreshToken', refreshToken, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production',
+//     sameSite: 'Lax', // Changed from 'Strict' to 'Lax'
+//     maxAge: parseInt(process.env.REFRESH_TOKEN_COOKIE_MAXAGE || 604800000)
+// });
+// Make the same change for accessToken cookie too.
+
+app.use('/uploads', express.static('uploads'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
