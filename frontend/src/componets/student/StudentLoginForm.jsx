@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PulseLoader } from 'react-spinners';
 import logo from '../../assets/Logo.png';
-import apiClient from '../../axiosConfig';
+import apiClient from '../../axiosConfig'; // Correctly imported apiClient
 import ForgotPasswordModal from './ForgotPasswordModal'; // Import the new modal component
 
 const StudentLoginForm = () => {
@@ -32,6 +32,7 @@ const StudentLoginForm = () => {
     setIsLoggingIn(true);
 
     try {
+      // FIXED: Using apiClient for the login request
       const response = await apiClient.post('/auth/login', {
         email: data.email,
         password: data.password,
