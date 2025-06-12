@@ -4,14 +4,13 @@ import { motion } from 'framer-motion';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
-// import { useNavigate } // Removed `useNavigate` since we are not directly navigating anymore due to `apiClient` handling it
 import { PulseLoader } from 'react-spinners';
 import { FaCamera } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './StudentProfile.css';
 import img from '../../assets/img.jpeg';
 import Navbar from '../Navbar';
-import apiClient from '../../axiosConfig'; // <-- Import apiClient here!
+import apiClient from '../../axiosConfig'; // Correctly imported apiClient
 
 const StudentProfile = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -47,7 +46,7 @@ const StudentProfile = () => {
     setDarkMode(checked);
   };
 
-  // Fetch student profile data using apiClient
+  // FIXED: Using apiClient to fetch student profile data
   useEffect(() => {
     const fetchStudentProfile = async () => {
       setLoading(true);
@@ -70,8 +69,7 @@ const StudentProfile = () => {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           // The interceptor should already redirect, so this part is more for display
           setError(err.response?.data?.msg || 'Session expired or unauthorized. Please log in again.');
-          // You might not need this navigate here if the interceptor handles it fully
-          // navigate('/login');
+          // navigate('/login'); // This is commented out as the interceptor should handle it
         } else {
           setError(err.response?.data?.msg || 'Failed to load student profile. Please check your connection.');
         }
@@ -98,7 +96,7 @@ const StudentProfile = () => {
     return null;
   };
 
-  // Handle image upload using apiClient
+  // FIXED: Handling image upload using apiClient
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -197,10 +195,10 @@ const StudentProfile = () => {
         <button
           onClick={() => fileInputRef.current.click()}
           className="absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4
-                     bg-purple-600 text-white p-3 rounded-full shadow-lg
-                     hover:bg-purple-700 transition-colors duration-200
-                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
-                     z-10"
+                       bg-purple-600 text-white p-3 rounded-full shadow-lg
+                       hover:bg-purple-700 transition-colors duration-200
+                       focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+                       z-10"
           aria-label="Upload profile picture"
         >
           <FaCamera size={20} />
