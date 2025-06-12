@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import axios from 'axios'; // Import axios
 
+
 // Set up a global Axios instance if you want to apply defaults like withCredentials for all requests
 axios.defaults.withCredentials = true; // This is crucial for sending and receiving cookies automatically
 
@@ -18,7 +19,7 @@ function App() {
                 // Try to fetch user info from the backend.
                 // If the access token cookie is valid, this should succeed.
                 // If it's expired, the backend might return 401.
-                const res = await axios.get('http://localhost:5004/api/users/me'); // Assuming a /api/users/me endpoint for current user info
+                const res = await axios.get('http://localhost:5005/api/users/me'); // Assuming a /api/users/me endpoint for current user info
                 if (res.data.user && res.data.user.role === 'admin') {
                     setIsAdmin(true);
                     localStorage.setItem('user', JSON.stringify(res.data.user)); // Update user info
@@ -93,6 +94,7 @@ function App() {
 
                 {/* Catch-all for undefined routes */}
                 <Route path="*" element={<Navigate to="/admin-login" replace />} />
+                
             </Routes>
         </Router>
     );

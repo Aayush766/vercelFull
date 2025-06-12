@@ -1,50 +1,105 @@
-// models/User.js
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'trainer', 'student'], required: true },
-  profilePicture: { type: String, default: '' },
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'trainer', 'student'],
+        default: 'student',
+    },
+    // Common fields
+    gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
+    contactNumber: { type: String, required: true },
+    address: { type: String, required: true },
+    dob: { type: Date, required: true },
+    profilePicture: { type: String }, // URL to profile picture
 
-  // Conditional required fields for student role
-  grade: {
-    type: Number,
-    required: function() { return this.role === 'student'; },
-    min: 1, // Example: add min/max for grade
-    max: 12
-  },
-  session: { // This might represent a session number, or could be an array of session IDs
-    type: Number,
-    required: false // Keep as false if optional
-  },
-  class: { // Matches frontend's 'name="class"'
-    type: String,
-    required: function() { return this.role === 'student'; }
-  },
-  rollNumber: {
-    type: String,
-    // Add unique constraint only if roll numbers are globally unique.
-    // If unique per class/grade, you'd need a compound index in Mongoose.
-    // For now, let's keep it simple.
-    // unique: true, // Uncomment if roll numbers are unique across all students
-    required: function() { return this.role === 'student'; }
-  },
-  school: {
-    type: String,
-    required: function() { return this.role === 'student'; }
-  },
-  dob: {
-    type: Date, // Mongoose will attempt to parse valid date strings (e.g., YYYY-MM-DD)
-    required: function() { return this.role === 'student'; }
-  },
-  fatherName: {
-    type: String,
-    required: function() { return this.role === 'student'; }
-  },
-  attendanceToday: { type: String, required: false }, // Consider Date or Boolean if actual attendance
-  attendanceMonth: { type: String, required: false }, // Consider Number or array if actual attendance count/records
+    // Admin specific fields (conditional) - if you have any, otherwise remove
+    // adminSpecificField: { type: String, required: function() { return this.role === 'admin'; } },
+
+    // Student specific fields (conditional)
+    school: { type: String, required: function() { return this.role === 'student'; } },
+    grade: { type: Number, required: function() { return this.role === 'student'; } },
+    assignedTrainer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: function() { return this.role === 'student'; },
+        // Ensure that assignedTrainer must be a 'trainer' role
+        validate: {
+            validator: async function(v) {
+                if (this.role === 'student' && v) {
+                    const trainer = await mongoose.model('User').findById(v);
+                    return trainer && trainer.role === 'trainer';
+                }
+                return true;
+            },
+            message: props => `${props.value} is not a valid trainer ID!`
+        }
+    },
+    batch: { type: String, required: function() { return this.role === 'student'; } },
+
+
+    // Trainer specific fields (conditional)
+    subject: { type: String, required: function() { return this.role === 'trainer'; } },
+    trainerSchool: { type: String, required: function() { return this.role === 'trainer'; } },
+    classesTaught: { type: [String], required: function() { return this.role === 'trainer'; } },
+    experience: { type: String, required: function() { return this.role === 'trainer'; } },
+    contact: { type: String, required: function() { return this.role === 'trainer'; } },
+    trainerDob: { type: Date, required: function() { return this.role === 'trainer'; } },
+    assignedSchools: { type: [String], default: [], required: function() { return this.role === 'trainer'; } },
+    assignedGrades: { type: [Number], default: [], required: function() { return this.role === 'trainer'; } },
+
+    // Feedback from Admin FOR Trainers (if applicable)
+    trainerFeedback: [{
+        submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Admin ID
+        lessonPlan: String,
+        logbook: String,
+        otherSuggestion: String,
+        submittedAt: { type: Date, default: Date.now }
+    }],
+    // NEW: Student feedback for THIS trainer (stored on the trainer's document)
+    studentFeedback: [{
+        submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Student ID
+        submittedByName: { type: String, required: true }, // Store student's name for easier display
+        submittedBySchool: { type: String, required: true }, // Store student's school
+        submittedByGrade: { type: Number, required: true }, // Store student's grade
+        ratings: {
+            'Teaching Quality': { type: Number, min: 0, max: 5, default: 0 },
+            'Chapter Explanation': { type: Number, min: 0, max: 5, default: 0 },
+            'Cleanliness': { type: Number, min: 0, max: 5, default: 0 },
+            'Facilities': { type: Number, min: 0, max: 5, default: 0 },
+            'Discipline': { type: Number, min: 0, max: 5, default: 0 },
+        },
+        feedback: { type: String, required: true }, // General feedback text
+        submittedAt: { type: Date, default: Date.now }
+    }]
 }, { timestamps: true });
+
+// Password hashing middleware
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Method to match password
+userSchema.methods.matchPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 
 module.exports = mongoose.model('User', userSchema);

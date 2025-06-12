@@ -1,20 +1,25 @@
-// models/Content.js (already correct)
+// models/Content.js
 const mongoose = require('mongoose');
 
 const contentSchema = new mongoose.Schema({
     title: { type: String, required: true },
     type: { type: String, required: true }, // e.g., 'ebook', 'video', 'quiz'
-    fileUrl: { type: String }, // Optional (for video/quiz, might be URL to external service or just file path)
-    videoList: [ // Array for video resources, if applicable (e.g., YouTube video IDs)
+    fileUrl: { type: String }, // For 'ebook', 'video'
+    videoList: [ // Array for external video resources
         {
-            id: { type: String },       // e.g., YouTube video ID
+            id: { type: String },
             title: { type: String },
-            thumbnail: { type: String }, // URL to thumbnail image
+            thumbnail: { type: String },
         }
     ],
+    quiz: { // New field: Reference to a Quiz document
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quiz',
+        required: function() { return this.type === 'quiz'; } // Required if type is 'quiz'
+    },
     grade: { type: Number, required: true },
     session: { type: Number, required: true },
-    uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Who uploaded this content
+    uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, {
     timestamps: true
 });

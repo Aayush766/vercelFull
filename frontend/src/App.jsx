@@ -37,6 +37,11 @@ import EbookViewer from './componets/EbookViwer';
 import TeacherDoubts from './componets/student/TeacherDoubts';
 import DocumentViewer from './componets/student/DocumentViewer';
 import { NotificationProvider } from './componets/student/context/NotificationContext';
+import QuizSectionReport from './componets/trainer/QuizSectionReport';
+import StudentDetail from './componets/trainer/StudentDetail';
+import ResetPasswordPage from './componets/student/ResetPasswordPage';
+import TrainerCourseView from './componets/trainer/TrainerCourseView';
+import TDocumentViewer from './componets/trainer/TDocumentViewer';
 // import AdminPanel from './AdminPanel'; // Uncomment if you have this
 
 function App() {
@@ -59,7 +64,7 @@ function App() {
         */}
         <Route path="/course/:id" element={<SessionDetails />} />
         <Route path="/course/:courseId/quiz/:quizId" element={<STEMQuiz />} />
-        <Route path="/result" element={<ResultPage/>} />
+        <Route path="/quiz-final-results" element={<ResultPage/>} />
         <Route path="/profile" element={<StudentProfile/>} />
         <Route path="/trainer/grade-details" element={<AddClassDetails/>} />
         <Route path="/trainer/lesson-plan" element={<LessonPlan/>} />
@@ -76,22 +81,25 @@ function App() {
         <Route path="/askadoubt" element={<AskADoubt/>} />
         <Route path="/edit-quiz/:sessionId" element={<EditQuiz />} />
         {/* Assuming QuizStart needs the session ID for context */}
-        <Route path="/course/:id/quiz" element={<QuizStart />} />
+       <Route path="/course/:courseId/quiz-start/:quizId" element={<QuizStart />} />
 
 
         <Route path="/trainer/addStudent" element={<AddStudent/>} />
         <Route path ="/trainer/students" element={<TrainerActions/>}/>
         <Route path ="/trainer/profile" element={<TrainerProfile/>}/>
 
+         {/* Reusing the component */}
+        <Route path="/trainer/document/:documentId" element={<DocumentViewer />} />
         {/* Assuming EbookViewer might need the session ID for context, or just a file URL */}
         <Route path="/course/:id/ebook" element={<EbookViewer />} />
-        <Route path="/quiz-summary" element={<QuizSummary />} />
+        <Route path="quiz-summary" element={<QuizSummary />} />
 
         <Route path="/mdoubts" element={<TeacherDoubts />} />
         {/* <Route path="/admin" element={<AdminPanel />} /> */}
-      
-      
-      
+       < Route path="/quiz-report/:sessionId/section/:section" element={<QuizSectionReport />} />
+       <Route path="/student-details/:sessionId/:section/:studentName" element={<StudentDetail/>} />
+       <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+       <Route path="/trainer/grade/:grade" element={<TrainerCourseView />} />
         <Route path="/document/:documentId" element={
           <DocumentViewer /> }/>
 

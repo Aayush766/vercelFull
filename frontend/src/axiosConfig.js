@@ -1,15 +1,14 @@
-// src/axiosConfig.js (Example)
+// src/axiosConfig.js
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5004/api', // Your backend API base URL
+  baseURL: 'http://localhost:5005/api', // Your backend API base URL
   withCredentials: true, // This is CRUCIAL for sending HTTP-only cookies
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// You would also add your interceptor logic here for refresh tokens
 apiClient.interceptors.response.use(
   response => response,
   async (error) => {
@@ -19,18 +18,29 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true; // Mark this request as retried
       try {
         // Attempt to refresh the token using the refresh token endpoint
-        // This endpoint should also be configured to accept cookies
-        const refreshResponse = await axios.post('http://localhost:5004/api/auth/refreshToken', {}, { withCredentials: true });
+        const refreshResponse = await axios.post('http://localhost:5005/api/auth/refreshToken', {}, { withCredentials: true });
 
         // If refresh is successful, the backend would have set new access/refresh tokens in cookies
-        // The original request can then be re-attempted
-        return apiClient(originalRequest); // Re-run the original failed request
+        // Re-run the original failed request
+        return apiClient(originalRequest);
 
       } catch (refreshError) {
-        // If refresh token fails or is expired, redirect to login
         console.error('Refresh token failed:', refreshError.response?.data?.msg || refreshError.message);
         localStorage.removeItem('user'); // Clear any cached user data
-        window.location.href = '/login'; // Redirect to login page
+
+        // --- MODIFICATION STARTS HERE ---
+        // Determine the redirect path based on a stored user role or current path
+        const currentUserRole = localStorage.getItem('userRole'); // Assuming you store the user's role
+        
+        let redirectPath = '/student-login'; // Default to student login
+
+        if (currentUserRole === 'trainer' || window.location.pathname.startsWith('/trainer')) {
+          redirectPath = '/trainer-login';
+        }
+        
+        window.location.href = redirectPath; // Redirect to the appropriate login page
+        // --- MODIFICATION ENDS HERE ---
+
         return Promise.reject(refreshError);
       }
     }

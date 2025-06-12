@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5004/api', // Set a base URL
+    baseURL: 'http://localhost:5005/api', // Set a base URL
     withCredentials: true, // IMPORTANT: Automatically send cookies
 });
 
@@ -30,7 +30,7 @@ apiClient.interceptors.response.use(
 
             try {
                 // Attempt to get a new access token using the refresh token
-                const refreshResponse = await axios.post('http://localhost:5004/api/auth/refresh-token', {}, { withCredentials: true });
+                const refreshResponse = await axios.post('http://localhost:5005/api/auth/refresh-token', {}, { withCredentials: true });
 
                 // If refresh is successful, retry the original request
                 // The new access token cookie will be automatically attached by the browser
