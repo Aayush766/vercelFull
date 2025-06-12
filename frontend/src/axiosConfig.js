@@ -21,7 +21,7 @@ apiClient.interceptors.response.use(
       try {
 
         // Attempt to refresh the token using the refresh token endpoint
-        const refreshResponse = await axios.post('http://vercelfull.onrender.com/api/auth/refreshToken', {}, { withCredentials: true });
+        const refreshResponse = await axios.post('https://vercelfull.onrender.com/api/auth/refreshToken', {}, { withCredentials: true });
 
         // If refresh is successful, the backend would have set new access/refresh tokens in cookies
         // Re-run the original failed request
