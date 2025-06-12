@@ -1,11 +1,10 @@
-// StudentDashboard.js
 import React, { useState, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 // import Timetable from './Timetable'; // Uncomment if you want to include Timetable
-import apiClient from '../../axiosConfig'; // Ensure this is imported!
+import apiClient from '../../axiosConfig'; // Correctly imported apiClient
 
 import defaultImg from '../../assets/img.jpeg'; // Ensure this path is correct
 import AssessmentsReport from './AssessmentsReport';
@@ -34,17 +33,18 @@ const StudentDashboard = () => {
     document.documentElement.classList.toggle('dark', checked);
   };
 
+  // FIXED: Using apiClient to fetch student data and progress
   useEffect(() => {
     const fetchStudentData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        // Fetch student profile data
+        // Fetch student profile data using apiClient
         const profileResponse = await apiClient.get('/student/profile');
         setStudentData(profileResponse.data.user);
 
-        // Fetch student progress data
+        // Fetch student progress data using apiClient
         const progressResponse = await apiClient.get('/student/progress');
         // Ensure progress is a number, default to 0 if null/undefined
         setStudentProgress(progressResponse.data.progress || 0);
@@ -52,13 +52,14 @@ const StudentDashboard = () => {
       } catch (err) {
         console.error('Error fetching student data:', err.response ? err.response.data : err.message);
 
-        // Handle authentication errors
+        // apiClient's interceptor should handle 401/403 redirection automatically.
+        // This local error handling is mostly for displaying a message if the interceptor
+        // somehow didn't redirect or if other non-auth errors occur.
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           localStorage.removeItem('user'); // Clear local user data
-          navigate('/student-login'); // Redirect to student login
+          // navigate('/student-login'); // This might be redundant if interceptor handles it
           setError(err.response?.data?.msg || 'Session expired or unauthorized. Please log in again.');
         } else {
-          // Handle other network/server errors
           setError(err.response?.data?.msg || 'Failed to load student data. Please check your connection.');
         }
       } finally {
