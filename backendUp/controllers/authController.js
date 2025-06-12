@@ -21,14 +21,14 @@ const generateTokensAndSetCookies = (user, res) => {
     res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax', // <--- CHANGED FROM 'Strict' TO 'Lax'
+        sameSite: 'Lax', // <--- FIXED: Changed from 'Strict' to 'Lax'
         maxAge: parseInt(process.env.ACCESS_TOKEN_COOKIE_MAXAGE || 900000)
     });
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax', // <--- CHANGED FROM 'Strict' TO 'Lax'
+        sameSite: 'Lax', // <--- FIXED: Changed from 'Strict' to 'Lax'
         maxAge: parseInt(process.env.REFRESH_TOKEN_COOKIE_MAXAGE || 604800000)
     });
 
