@@ -6,7 +6,7 @@ import axios from 'axios';
 // For Netlify, set a variable named REACT_APP_API_BASE_URL (or similar, depending on your framework)
 // in your Netlify site settings -> Build & deploy -> Environment variables.
 // Its value should be the base URL of your Render backend (e.g., https://vercelfull.onrender.com).
-const API_BASE_URL = https://vercelfull.onrender.com' || 'http://localhost:5004'; // Default for local dev
+const API_BASE_URL = 'https://vercelfull.onrender.com' || 'http://localhost:5004'; // Default for local dev
 
 // --- FIX 4: Ensure baseURL correctly points to your backend ---
 // This will combine your base URL with the /api prefix
