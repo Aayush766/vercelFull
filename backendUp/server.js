@@ -12,7 +12,7 @@ const trainerRoutes = require('./routes/trainerRoutes');
 
 const app = express();
 app.use(cors({
-    origin: [process.env.FRONTEND_URL || 'https://lmsgkai.netlify.app'], // Allow your frontend origin
+    origin: [process.env.FRONTEND_URL ], // Allow your frontend origin
     credentials: true // Allow cookies to be sent
 }));
 app.use(express.json());
