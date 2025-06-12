@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5005/api', // Your backend API base URL
+  baseURL: 'https://vercelfull.onrender.com/api', // Your backend API base URL
   withCredentials: true, // This is CRUCIAL for sending HTTP-only cookies
   headers: {
     'Content-Type': 'application/json',
