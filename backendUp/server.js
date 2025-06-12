@@ -17,8 +17,9 @@ const app = express();
 // Set an environment variable named FRONTEND_URL in your Render backend service.
 // Its value MUST be the exact Netlify URL (e.g., https://lmsgk.netlify.app).
 app.use(cors({
-    origin: process.env.FRONTEND_URL, // Directly use the string, array syntax is fine but not strictly needed for one origin
-    credentials: true, // Allow cookies to be sent
+    origin: process.env.FRONTEND_URL, // Allow your frontend origin
+    credentials: true, // ABSOLUTELY ESSENTIAL for cookies to be sent and received
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Explicitly list all methods your frontend uses
     optionsSuccessStatus: 204 // Good practice for preflight requests
 }));
 
