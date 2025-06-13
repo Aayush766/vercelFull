@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const apiClient = axios.create({
 
-  baseURL: 'https://vercelfull.onrender.com/api', // Your backend API base URL
+  baseURL: 'https://vercelfull-1.onrender.com/api', // Your backend API base URL
   withCredentials: true, // This is CRUCIAL for sending HTTP-only cookies
 
   headers: {
@@ -21,7 +21,7 @@ apiClient.interceptors.response.use(
       try {
 
         // Attempt to refresh the token using the refresh token endpoint
-        const refreshResponse = await axios.post('https://vercelfull.onrender.com/api/auth/refreshToken', {}, { withCredentials: true });
+        const refreshResponse = await axios.post('https://vercelfull-1.onrender.com/api/auth/refreshToken', {}, { withCredentials: true });
 
         // If refresh is successful, the backend would have set new access/refresh tokens in cookies
         // Re-run the original failed request
