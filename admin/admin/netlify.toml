@@ -1,0 +1,11 @@
+# vercelFull/netlify.toml
+[build]
+  base = "admin/admin"
+  command = "npm run build"
+  publish = "dist"
+
+# Add this for client-side routing if you use React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
