@@ -19,7 +19,7 @@ function App() {
                 // Try to fetch user info from the backend.
                 // If the access token cookie is valid, this should succeed.
                 // If it's expired, the backend might return 401.
-                const res = await axios.get('http://localhost:5005/api/users/me'); // Assuming a /api/users/me endpoint for current user info
+                const res = await axios.get('http://vercelfull.onrender.com/api/users/me'); // Assuming a /api/users/me endpoint for current user info
                 if (res.data.user && res.data.user.role === 'admin') {
                     setIsAdmin(true);
                     localStorage.setItem('user', JSON.stringify(res.data.user)); // Update user info
@@ -83,7 +83,7 @@ function App() {
                 */}
                 <Route
                     path="/dashboard"
-                    element={localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).role === 'admin' ? <Dashboard /> : <Navigate to="/admin-login" replace />}
+                    element = {<Dashboard /> }
                 />
 
                 {/* Default route to redirect to login */}
