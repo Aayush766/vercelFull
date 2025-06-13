@@ -44,7 +44,7 @@ const generateTokensAndSetCookies = (user, res) => {
 
         secure: process.env.NODE_ENV === 'production',
 
-        sameSite: 'Strict',
+        sameSite: 'None',
 
         maxAge: parseInt(process.env.ACCESS_TOKEN_COOKIE_MAXAGE || 900000)
 
@@ -58,7 +58,7 @@ const generateTokensAndSetCookies = (user, res) => {
 
         secure: process.env.NODE_ENV === 'production',
 
-        sameSite: 'Strict',
+        sameSite: 'None',
 
         maxAge: parseInt(process.env.REFRESH_TOKEN_COOKIE_MAXAGE || 604800000)
 
